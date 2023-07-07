@@ -477,10 +477,12 @@ def main(args=None):
 
     multi_node_exec = args.force_multi or len(active_resources) > 1
 
+    dp_master_port = int(os.getenv('DP_MASTER_PORT',args.master_port))
+
     if not multi_node_exec:
         deepspeed_launch = [
             sys.executable, "-u", "-m", "deepspeed.launcher.launch", f"--world_info={world_info_base64}",
-            f"--master_addr={args.master_addr}", f"--master_port={args.master_port}"
+            f"--master_addr={args.master_addr}", f"--master_port={dp_master_port}"
         ]
         if args.no_python:
             deepspeed_launch.append("--no_python")
